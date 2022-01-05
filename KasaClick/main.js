@@ -11,6 +11,7 @@ buttonManager.on("buttonSingleOrDoubleClickOrHold", function(obj) {
 		headers: {"Content-Type": "application/json"},
 		content: JSON.stringify({"serial-number": button.serialNumber, "click-type": clickType}),		
 	}, function(err, res) {
+		console.log("button: " + button.serialNumber)
 		console.log("request status: " + res.statusCode);
 		console.log("response content: " + res.content)
 	});
