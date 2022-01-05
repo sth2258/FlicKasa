@@ -103,6 +103,7 @@ def kasatoggle(dev):
 
 
 #Get Device IDs from https://github.com/softScheck/tplink-smartplug/
+#`kasa` command will run discovery
 light_frontSoffitLeft = Device("Front Soffit Lights Left - HS200(US)", "192.168.1.100", "80067C79433DD2AE5591CD6662B578111E606285")
 light_frontSoffitRight = Device("Front Soffit Lights Right - HS200(US)", "192.168.1.51", "80066BAC4451744AF31D223238E123F51E608702")
 light_frontLeft = Device("Front Left Lights", "192.168.1.228", "8006FC6DBE4703F4FCC9C2EB9B28AFB91E027F9C00")
@@ -111,6 +112,8 @@ light_christmas1 = Device("Christmas 1", "192.168.1.92", "8006D423B768AAE715A859
 light_christmas2 = Device("Christmas 2", "192.168.1.228", "8006FC6DBE4703F4FCC9C2EB9B28AFB91E027F9C01")
 light_rearLandscape = Device("Rear Landscape Lights","192.168.1.123","80066F237AE04D2B4827D1E72BD551AA1DFFB41B00")
 light_rearFloodLight = Device("Rear Flood Light","192.168.1.123","80066F237AE04D2B4827D1E72BD551AA1DFFB41B01")
+light_masterFan = Device("Master Bedroom Fan - HS200(US)", "192.168.1.56", "800638C33F2FAF9BA5C504DCF71E2E081EE6539B")
+light_master = Device("Master Bedroom Dimmer - HS220(US)", "192.168.1.116", "80068DCBBCA3C5F344FE56385DC9CDE81EBF5CB1")
 
 @app.route('/', methods = ['POST'])
 def index():
@@ -134,6 +137,7 @@ def index():
             #Do nothing?
             return "Do Nothing"
     
+    #Backdoor
     if serialnumber == "BF43-C04275":
         if clicktype == "click":
             kasatoggle(light_rearFloodLight)
@@ -145,6 +149,19 @@ def index():
             #Do nothing?
             return "Do Nothing"
 
+    #Master - Steph
+    if serialnumber == "BE34-C73768":
+        if clicktype == "click":
+            kasatoggle(light_master)
+            return "Toggle Master Lights"
+        if clicktype == "double_click":
+            kasatoggle(light_masterFan)
+            return "Toggle Master Fan"
+        if clicktype == "hold":
+            #Do nothing?
+            return "Do Nothing"
+
+    #Test button
     if serialnumber == "BF43-C05878":
         if clicktype == "click":
             kasatoggle(light_rearFloodLight)
@@ -159,5 +176,6 @@ def index():
     
     return 'Hello world'
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+if __name__ == "__main__":
+    from waitress import serve
+    serve(app, host="0.0.0.0", port=5000)
