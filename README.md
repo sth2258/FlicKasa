@@ -6,6 +6,8 @@ This setup relies on the a local Flask instance running on the same network as t
 1. Enable Flic SDK within the app and take note of the SDK Password written on the device itself
 2. Login to the SDK at https://hubsdk.flic.io/
 3. Create a Flic Module - copy the content from the main.js script here into the web editor. 
-4. Install the `webapp/app.py` script on your server and update the relevant content
+4. Using docker:
   - Create `Device` objects (line 106-113) for your Kasa devices
   - Set the relevant action of your Flic buttons (line 126 - 157)
+  - `docker build app/`
+  - `docker run -p 5000:5000 flickasa` 
